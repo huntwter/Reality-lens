@@ -17,21 +17,21 @@ The system operates as a stateless asynchronous microservice built on **FastAPI 
 
 ```mermaid
 graph TD
-    Client[Client (Browser / Vanilla JS)] <-->|REST / SSE| API[FastAPI Orchestrator]
+    Client["Client (Browser / Vanilla JS)"] <-->|REST / SSE| API["FastAPI Orchestrator"]
     
     subgraph "Neural Core (Async)"
-        API -->|Dispatch| Log[Logician Agent (Logic)]
-        API -->|Dispatch| His[Historian Agent (Grounding)]
-        API -->|Dispatch| Pro[Profiler Agent (Rhetoric)]
+        API -->|Dispatch| Log["Logician Agent (Logic)"]
+        API -->|Dispatch| His["Historian Agent (Grounding)"]
+        API -->|Dispatch| Pro["Profiler Agent (Rhetoric)"]
     end
     
     subgraph "Inference Layer"
-        Log & His & Pro --> Provider[LLM Provider]
+        Log & His & Pro --> Provider["LLM Provider"]
         
-        Provider -->|Primary| Gemini[Gemini 3 Flash API]
-        Provider -.->|Fallback (429/5xx)| Cache[Local Vector Cache]
+        Provider -->|Primary| Gemini["Gemini 3 Flash API"]
+        Provider -.->|"Fallback (429/5xx)"| Cache["Local Vector Cache"]
         
-        Gemini -->|Grounding| Search[Google Search]
+        Gemini -->|Grounding| Search["Google Search"]
     end
 ```
 
