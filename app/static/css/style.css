@@ -1,0 +1,229 @@
+:root {
+    --color-void: #0a0a0a;
+    --color-charcoal: #141414;
+    --color-text: #EAEAEA;
+    --color-text-dim: #888888;
+    --color-gold: #C5A059;
+    /* More muted, less yellow */
+    --color-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    background-color: var(--color-void);
+    color: var(--color-text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Allow scrolling for content */
+    letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-serif {
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+}
+
+/* Typography for Agent Output */
+.prose-luxury {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #CCC;
+}
+
+.prose-luxury p {
+    margin-bottom: 1rem;
+}
+
+.prose-luxury strong {
+    color: #FFF;
+    font-weight: 500;
+}
+
+/* Specific Agent Styling overrides */
+.animate-reveal {
+    animation: revealCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.agent-header {
+    /* Removed card header styles, now controlled by HTML structure */
+    display: none;
+}
+
+/* Input Focus State */
+#query-input:focus {
+    border-bottom-color: var(--color-gold);
+}
+
+/* Animation: Simple Fade In (No Float/Slide) */
+#results-grid {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#results-grid.visible {
+    opacity: 1;
+}
+
+/* Utility to hide scrollbar but allow scroll */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-void);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+}
+
+/* Loading Animation */
+@keyframes scan {
+    0% {
+        left: -50%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+
+/* Premium Card Loading State */
+@keyframes softPulse {
+    0% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.4;
+    }
+}
+
+.loading-pulse {
+    animation: softPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    color: var(--color-text-dim);
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+
+
+/* Blur Text Loading Animation */
+.loading-text {
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.loading-text-words {
+    display: inline-block;
+    margin: 0 2px;
+    color: var(--color-gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    filter: blur(0px);
+    animation: blur-text 1.5s infinite linear alternate;
+}
+
+.loading-text-words:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loading-text-words:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-text-words:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.loading-text-words:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.loading-text-words:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+.loading-text-words:nth-child(6) {
+    animation-delay: 1.0s;
+}
+
+.loading-text-words:nth-child(7) {
+    animation-delay: 1.2s;
+}
+
+.loading-text-words:nth-child(8) {
+    animation-delay: 1.4s;
+}
+
+.loading-text-words:nth-child(9) {
+    animation-delay: 1.6s;
+}
+
+.loading-text-words:nth-child(10) {
+    animation-delay: 1.8s;
+}
+
+.loading-text-words:nth-child(11) {
+    animation-delay: 2.0s;
+}
+
+.loading-text-words:nth-child(12) {
+    animation-delay: 2.2s;
+}
+
+.loading-text-words:nth-child(13) {
+    animation-delay: 2.4s;
+}
+
+.loading-text-words:nth-child(14) {
+    animation-delay: 2.6s;
+}
+
+.loading-text-words:nth-child(15) {
+    animation-delay: 2.8s;
+}
+
+.loading-text-words:nth-child(16) {
+    animation-delay: 3.0s;
+}
+
+.loading-text-words:nth-child(17) {
+    animation-delay: 3.2s;
+}
+
+.loading-text-words:nth-child(18) {
+    animation-delay: 3.4s;
+}
+
+.loading-text-words:nth-child(19) {
+    animation-delay: 3.6s;
+}
+
+.loading-text-words:nth-child(20) {
+    animation-delay: 3.8s;
+}
+
+@keyframes blur-text {
+    0% {
+        filter: blur(0px);
+    }
+
+    100% {
+        filter: blur(4px);
+    }
+}

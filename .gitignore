@@ -1,0 +1,31 @@
+# Secrets
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDs and Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+error.txt
+startup_log.txt
+
+# Testing and Debugging
+test_*.py
+debug_*.py
+generate_cache_data.py
+pytest_cache/
+.pytest_cache/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Virtual Environment
+venv/
+env/
