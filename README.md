@@ -1,87 +1,84 @@
-# RealityLens — Cognitive Firewall
+# RealityLens
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-realitylens.domain.com-C5A059?style=for-the-badge&logo=google-chrome&logoColor=white)](https://realitylens.domain.com)
-[![License](https://img.shields.io/badge/License-MIT-333?style=for-the-badge)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Powered By](https://img.shields.io/badge/AI-Gemini_3_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+**Cognitive Security & Logic Analysis Engine**
+Live Deployment: [realitylens.domain.com](https://realitylens.domain.com)
 
-**RealityLens** is a next-generation **Cognitive Firewall**. It is a real-time AI logic engine designed to analyze text, detect rhetorical manipulation, and expose logical fallacies using a multi-agent reasoning system.
+RealityLens is an enterprise-grade cognitive firewall designed to detect, analyze, and deconstruct rhetorical manipulation in real-time. Unlike standard fact-checkers, it employs a multi-agentic architecture to strictly separate logical validity, historical verification, and rhetorical intent.
 
----
+## Technical Abstract
 
-## 🚀 Live Deployment
+The system operates as a stateless asynchronous microservice built on **FastAPI (Python 3.10+)**. It leverages the **Google GenAI SDK (Gemini 3 Flash)** for reasoning, utilizing a custom orchestration layer to manage parallel agent execution and streamed responses. Key architectural features include:
 
-Access the live application here: **[realitylens.domain.com](https://realitylens.domain.com)**
+*   **Multi-Agent Syllogistic Processing**: Separation of concerns logic (Logos/Ethos/Pathos).
+*   **Hybrid-Offline Resilience**: Deterministic fallback to a local cryptographic-grade cache during API latency/failure.
+*   **Event-Driven Streaming**: Server-Sent Events (SSE) for non-blocking, rapid-fire analysis delivery.
 
----
+## System Architecture
 
-## 🧠 Core Architecture
+### 1. The Neural Orchestrator
+Input text is ingested via REST endpoints and dispatched to the connection pool. The orchestrator spawns three concurrent asynchronous tasks, each governed by a strict system prompt and toolset:
 
-RealityLens operates on a **Semantic Triage Architecture**, splitting every query into three distinct cognitive dimensions handled by specialized agents:
+*   **Agent A: The Logician (Structural Analysis)**
+    *   *Role*: Pure deductive reasoning.
+    *   *Function*: Identifies logical fallacies (Strawman, Ad Hominem), contradictions, and syllogistic errors.
+    *   *Grounding*: Self-contained logic; zero external data access to prevent hallucination.
 
-1.  **The Logician (Logos)**: Analyzes internal consistency, valid syllogisms, and logical fallacies.
-2.  **The Historian (Ethos)**: Traces the etymological roots, historical context, and factual verification of the claim using Google Search Grounding.
-3.  **The Profiler (Pathos)**: Decodes the emotional intent, rhetorical intensity, and persuasive techniques used in the text.
+*   **Agent B: The Historian (Fact Verification)**
+    *   *Role*: Empirical verification.
+    *   *Function*: Cross-references claims against trusted external datasets via Google Search Grounding.
+    *   *Output*: Verified origin tracing and primary source citation.
 
-### Robust Graceful Fallback
-To ensure 100% reliability during high-stakes demonstrations, RealityLens features a **Hybrid-Offline Mode**:
-*   **Live Mode**: Default. Uses **Gemini 3 Flash** via the `google-genai` SDK for real-time, ground-truth analysis.
-*   **Cached Fallback**: If the API experiences latency or quota limits, the system transparently serves pre-computed, high-fidelity analyses from a local cache of 100+ common misconceptions, ensuring the UX remains fluid and uninterrupted.
+*   **Agent C: The Profiler (Rhetorical Telemetry)**
+    *   *Role*: Sentiment and Intent classification.
+    *   *Function*: Analyzes linguistic patterns to determine emotional manipulation or biases.
 
----
+### 2. Resiliency Protocol (Offline Fallback)
+To guarantee system availability in high-latency environments (e.g., demos, air-gapped networks), RealityLens implements a fuzzy-matching fallback layer:
 
-## 🛠️ Technical Stack
+*   **Mechanism**: Uses `difflib.SequenceMatcher` to compare inputs against a pre-computed vector space of 100+ common misconceptions.
+*   **Behavior**: If the primary inference API fails (5xx/429), the system transparently retrieves the nearest neighbor analysis from `cached_responses.json`.
+*   **Continuity**: Frontend consumers receive identical data structures, ensuring zero downtime or UX degradation.
 
-*   **Backend**: Python FastAPI (Async/Await)
-*   **AI Engine**: Google GenAI SDK (`gemini-3-flash-preview`)
-*   **Frontend**: Vanilla ES6 JavaScript + TailwindCSS
-*   **Design System**: Custom "Quiet Luxury" Semantic Glassmorphism
-*   **Transport**: Server-Sent Events (SSE) for millisecond-latency streaming
+### 3. Frontend Implementation
+The interface is a minimal, dependency-light **Vanilla JS (ES6)** application styled with utility-first CSS (**Tailwind**). It handles:
+*   Real-time SSE stream consumption.
+*   DOM-efficient updates for partial HTML fragments.
+*   Secure input sanitation.
 
----
+## Deployment & Configuration
 
-## 📦 Installation & Setup
-
-### Prerequisites
+### Requirements
 *   Python 3.10+
-*   Google Gemini API Key
+*   Environment Variables configured for security.
 
-### 1. Clone Repository
-```bash
-git clone https://github.com/huntwter/Reality-lens.git
-cd Reality-lens
-```
+### Installation
 
-### 2. Environment Setup
-Create a `.env` file in the root directory:
-```ini
-GEMINI_API_KEY=your_api_key_here
-PROJECT_NAME="RealityLens"
-VERSION="1.0.0"
-```
+1.  **Clone Source**
+    ```bash
+    git clone https://github.com/huntwter/Reality-lens.git
+    cd Reality-lens
+    ```
 
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+2.  **Environment Security**
+    Create a `.env` file. **Never commit this file.**
+    ```bash
+    GEMINI_API_KEY=your_secure_api_key
+    ```
 
-### 4. Run Application
-```bash
-# Development Server
-python main.py
+3.  **Dependency Initialization**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-# Production Server
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
+4.  **Production Execution**
+    Use a production-grade ASGI server (Uvicorn/Gunicorn):
+    ```bash
+    uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+    ```
 
----
+## Development
 
-## 🛡️ License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+To extend the agent capabilities, modify `app/agents/base.py` to implement new reasoning strategies. The standard interface requires an `analyze(input_text: str)` coroutine returning an `AgentResponse` schema.
 
 ---
-
-<p align="center">
-  <small>Designed & Engineered with Precision.</small>
-</p>
+*Copyright © 2026 RealityLens. All Rights Reserved.*
