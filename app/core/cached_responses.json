@@ -398,5 +398,25 @@
     {
         "query": "AI will kill us",
         "response": "<div id=\"logic-card\"><p>Analysis of: AI will kill us. The claim involves sci-fi fear.. Logic dictates that currently just pattern matchers. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Sci-fi fear. misconceptions. This is a recurring theme in popular understanding. Currently just pattern matchers. AGI is theoretical.</p></div><div id=\"context-card\"><p>The tone is inquiring about Sci-fi fear.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
+    },
+    {
+        "query": "Quantum computers replace classic",
+        "response": "<div id=\"logic-card\"><p>Analysis of: Quantum computers replace classic. The claim involves tech hype.. Logic dictates that they solve different problems (optimization/sim) not general tasks. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Tech hype. misconceptions. This is a recurring theme in popular understanding. They solve different problems (optimization/sim) not general tasks. You won't run Word on a QPU.</p></div><div id=\"context-card\"><p>The tone is inquiring about Tech hype.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
+    },
+    {
+        "query": "blockchain is only crypto",
+        "response": "<div id=\"logic-card\"><p>Analysis of: blockchain is only crypto. The claim involves tech conflation.. Logic dictates that it is a ledger technology usable for supply chain/voting. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Tech conflation. misconceptions. This is a recurring theme in popular understanding. It is a ledger technology usable for supply chain/voting. Crypto is just one app.</p></div><div id=\"context-card\"><p>The tone is inquiring about Tech conflation.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
+    },
+    {
+        "query": "VPNs make you anonymous",
+        "response": "<div id=\"logic-card\"><p>Analysis of: VPNs make you anonymous. The claim involves security marketing.. Logic dictates that they hide IP from sites, but VPN provider sees all. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Security marketing. misconceptions. This is a recurring theme in popular understanding. They hide IP from sites, but VPN provider sees all. Analysis of traffic patterns can still de-anonymize.</p></div><div id=\"context-card\"><p>The tone is inquiring about Security marketing.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
+    },
+    {
+        "query": "More RAM means faster PC",
+        "response": "<div id=\"logic-card\"><p>Analysis of: More RAM means faster PC. The claim involves hardware myth.. Logic dictates that only if you were running out. CPU/SSD speed matters more for snapiness. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Hardware myth. misconceptions. This is a recurring theme in popular understanding. Only if you were running out. Unused RAM is just empty space.</p></div><div id=\"context-card\"><p>The tone is inquiring about Hardware myth.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
+    },
+    {
+        "query": "Deleting history prevents tracking",
+        "response": "<div id=\"logic-card\"><p>Analysis of: Deleting history prevents tracking. The claim involves privacy error.. Logic dictates that cookies, browser fingerprinting, and server logs persist. The premise is often misunderstood due to simplification.</p></div><div id=\"origin-card\"><p>Originating from Privacy error. misconceptions. This is a recurring theme in popular understanding. Cookies, browser fingerprinting, and server logs persist. History is just your local record.</p></div><div id=\"context-card\"><p>The tone is inquiring about Privacy error.. The user seeks clarification on a commonly held belief. The communication reflects a desire for fact-checking.</p></div>"
     }
 ]

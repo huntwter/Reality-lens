@@ -33,11 +33,21 @@ Input text is ingested via REST endpoints and dispatched to the connection pool.
     *   *Function*: Analyzes linguistic patterns to determine emotional manipulation or biases.
 
 ### 2. Resiliency Protocol (Offline Fallback)
-To guarantee system availability in high-latency environments (e.g., demos, air-gapped networks), RealityLens implements a fuzzy-matching fallback layer:
+To guarantee system availability in high-latency environments (e.g., demos, air-gapped networks), RealityLens implements a fuzzy-matching fallback layer.
+**Graceful degradation when external AI services are unavailable.**
 
 *   **Mechanism**: Uses `difflib.SequenceMatcher` to compare inputs against a pre-computed vector space of 100+ common misconceptions.
 *   **Behavior**: If the primary inference API fails (5xx/429), the system transparently retrieves the nearest neighbor analysis from `cached_responses.json`.
 *   **Continuity**: Frontend consumers receive identical data structures, ensuring zero downtime or UX degradation.
+
+### Example Cached Responses
+The system ships with 100+ high-fidelity pre-computed analyses for common misconceptions. Examples:
+
+| Query | Logic Analysis (Logos) | Verification (Ethos) |
+| :--- | :--- | :--- |
+| *"Do we only use 10% of our brains?"* | **False**. Evolution would not sustain an energy-expensive organ that is 90% useless. fMRI shows activity across the entire cerebrum. | **Origin**: Misinterpretation of William James' work or Karl Lashley's experiments in the 1920s. |
+| *"Does sugar make kids hyper?"* | **False**. Double-blind studies show no difference behaviorally between sugar and placebo. | **Origin**: 1970s Feingold Diet; primarily a psychological/environmental confirmation bias by parents. |
+| *"Is the Earth flat?"* | **False**. Contradicts all geodetic and astronomical evidence. Gravity naturally shapes large mass objects into spheres. | **Origin**: Modern resurgence in 19th and 21st centuries as a rejection of institutional scientific authority. |
 
 ### 3. Frontend Implementation
 The interface is a minimal, dependency-light **Vanilla JS (ES6)** application styled with utility-first CSS (**Tailwind**). It handles:
