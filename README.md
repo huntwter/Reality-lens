@@ -15,6 +15,26 @@ The system operates as a stateless asynchronous microservice built on **FastAPI 
 
 ## System Architecture
 
+```mermaid
+graph TD
+    Client[Client (Browser / Vanilla JS)] <-->|REST / SSE| API[FastAPI Orchestrator]
+    
+    subgraph "Neural Core (Async)"
+        API -->|Dispatch| Log[Logician Agent (Logic)]
+        API -->|Dispatch| His[Historian Agent (Grounding)]
+        API -->|Dispatch| Pro[Profiler Agent (Rhetoric)]
+    end
+    
+    subgraph "Inference Layer"
+        Log & His & Pro --> Provider[LLM Provider]
+        
+        Provider -->|Primary| Gemini[Gemini 3 Flash API]
+        Provider -.->|Fallback (429/5xx)| Cache[Local Vector Cache]
+        
+        Gemini -->|Grounding| Search[Google Search]
+    end
+```
+
 ### 1. The Neural Orchestrator
 Input text is ingested via REST endpoints and dispatched to the connection pool. The orchestrator spawns three concurrent asynchronous tasks, each governed by a strict system prompt and toolset:
 
