@@ -111,4 +111,10 @@ The interface is a minimal, dependency-light **Vanilla JS (ES6)** application st
 To extend the agent capabilities, modify `app/agents/base.py` to implement new reasoning strategies. The standard interface requires an `analyze(input_text: str)` coroutine returning an `AgentResponse` schema.
 
 ---
+## License
+
+This project is licensed under Apache 2.0
+
+---
+
 *Copyright © 2026 RealityLens. All Rights Reserved.*
