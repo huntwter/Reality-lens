@@ -3,15 +3,17 @@
 **Cognitive Security & Logic Analysis Engine**
 Live Deployment: [realitylens.onrender.com](https://realitylens.onrender.com)
 
-RealityLens is an enterprise-grade cognitive firewall designed to detect, analyze, and deconstruct rhetorical manipulation in real-time. Unlike standard fact-checkers, it employs a multi-agentic architecture to strictly separate logical validity, historical verification, and rhetorical intent.
+Live Deployment: [realitylens](https://reality-lens.onrender.com)
+
+RealityLens is a cognitive analysis engine designed to help users understand how a claim or question is structured, framed, and emotionally presented. Instead of returning direct answers, the system analyzes input text across logical structure, narrative context, and rhetorical tone using structured Gemini 3 reasoning.
 
 ## Technical Abstract
 
 The system operates as a stateless asynchronous microservice built on **FastAPI (Python 3.10+)**. It leverages the **Google GenAI SDK (Gemini 3 Flash)** for reasoning, utilizing a custom orchestration layer to manage parallel agent execution and streamed responses. Key architectural features include:
 
-*   **Multi-Agent Syllogistic Processing**: Separation of concerns logic (Logos/Ethos/Pathos).
-*   **Hybrid-Offline Resilience**: Deterministic fallback to a local cryptographic-grade cache during API latency/failure.
-*   **Event-Driven Streaming**: Server-Sent Events (SSE) for non-blocking, rapid-fire analysis delivery.
+*  **Multi-Agent Reasoning Pipeline**: Separate agents analyze logical structure, narrative framing, and rhetorical tone.
+*  **Graceful Fallback Mode**: When external AI services experience temporary latency or quota limits, the system switches to a demo-stable mode using pre-generated Gemini 3 sample analyses.
+*  **Event-Driven Streaming**: Server-Sent Events (SSE) deliver incremental analysis results to the frontend.
 
 ## System Architecture
 
@@ -31,7 +33,7 @@ graph TD
         Provider -->|Primary| Gemini["Gemini 3 Flash API"]
         Provider -.->|"Fallback (429/5xx)"| Cache["Local Vector Cache"]
         
-        Gemini -->|Grounding| Search["Google Search"]
+        Gemini --> Response["Structured HTML Output"]
     end
 ```
 
@@ -43,31 +45,36 @@ Input text is ingested via REST endpoints and dispatched to the connection pool.
     *   *Function*: Identifies logical fallacies (Strawman, Ad Hominem), contradictions, and syllogistic errors.
     *   *Grounding*: Self-contained logic; zero external data access to prevent hallucination.
 
-*   **Agent B: The Historian (Fact Verification)**
-    *   *Role*: Empirical verification.
-    *   *Function*: Cross-references claims against trusted external datasets via Google Search Grounding.
-    *   *Output*: Verified origin tracing and primary source citation.
+*   **Agent B: The Historian (Narrative Context)**
+    *   *Role*: Narrative framing analysis.
+    *   *Function*: Examines phrasing patterns to determine whether a narrative appears novel, recurring, or timeless.
+    *   *Output*: Linguistic narrative context summary.
 
 *   **Agent C: The Profiler (Rhetorical Telemetry)**
     *   *Role*: Sentiment and Intent classification.
     *   *Function*: Analyzes linguistic patterns to determine emotional manipulation or biases.
 
-### 2. Resiliency Protocol (Offline Fallback)
-To guarantee system availability in high-latency environments (e.g., demos, air-gapped networks), RealityLens implements a fuzzy-matching fallback layer.
-**Graceful degradation when external AI services are unavailable.**
 
-*   **Mechanism**: Uses `difflib.SequenceMatcher` to compare inputs against a pre-computed vector space of 100+ common misconceptions.
-*   **Behavior**: If the primary inference API fails (5xx/429), the system transparently retrieves the nearest neighbor analysis from `cached_responses.json`.
-*   **Continuity**: Frontend consumers receive identical data structures, ensuring zero downtime or UX degradation.
+### 2. Resilience & Demo Stability
 
-### Example Cached Responses
-The system ships with 100+ high-fidelity pre-computed analyses for common misconceptions. Examples:
+- During live operation, RealityLens performs real-time Gemini 3 reasoning calls.
 
-| Query | Logic Analysis (Logos) | Verification (Ethos) |
+- During demo or testing scenarios where external AI services may be temporarily unavailable, the system automatically switches to a demo-stable fallback mode, serving previously generated Gemini 3 analyses.
+
+- This ensures uninterrupted user experience while preserving identical frontend orchestration behavior.
+
+
+### Example Demo-Mode Gemini Outputs
+
+To ensure uninterrupted demonstrations, the system includes a library of pre-generated Gemini 3 sample analyses for commonly tested queries. These samples illustrate the style and structure of RealityLens outputs when fallback mode is active.
+
+
+| Example Query | Sample Logical Structure Summary | Sample Narrative Context Summary |
 | :--- | :--- | :--- |
-| *"Do we only use 10% of our brains?"* | **False**. Evolution would not sustain an energy-expensive organ that is 90% useless. fMRI shows activity across the entire cerebrum. | **Origin**: Misinterpretation of William James' work or Karl Lashley's experiments in the 1920s. |
-| *"Does sugar make kids hyper?"* | **False**. Double-blind studies show no difference behaviorally between sugar and placebo. | **Origin**: 1970s Feingold Diet; primarily a psychological/environmental confirmation bias by parents. |
-| *"Is the Earth flat?"* | **False**. Contradicts all geodetic and astronomical evidence. Gravity naturally shapes large mass objects into spheres. | **Origin**: Modern resurgence in 19th and 21st centuries as a rejection of institutional scientific authority. |
+| "Do we only use 10% of our brains?" | The phrasing presents a claim framed as a scientific-sounding assertion without internal reasoning context. | The narrative style reflects a long-running popular myth pattern in public discourse. |
+| "Does sugar make kids hyper?" | The query is structured as a cause–effect assumption framed as a behavioral concern. | The wording reflects a recurring parental-anxiety narrative style. |
+| "Is the Earth flat?" | The sentence presents a direct contradiction-style claim structured as a challenge statement. | The phrasing aligns with modern contrarian narrative patterns rather than neutral inquiry framing. |
+
 
 ### 3. Frontend Implementation
 The interface is a minimal, dependency-light **Vanilla JS (ES6)** application styled with utility-first CSS (**Tailwind**). It handles:
@@ -111,4 +118,11 @@ The interface is a minimal, dependency-light **Vanilla JS (ES6)** application st
 To extend the agent capabilities, modify `app/agents/base.py` to implement new reasoning strategies. The standard interface requires an `analyze(input_text: str)` coroutine returning an `AgentResponse` schema.
 
 ---
-*Copyright © 2026 RealityLens. All Rights Reserved.*
+## License
+
+This project is licensed under Apache 2.0
+
+---
+
+© 2026 RealityLens — All Rights Reserved.
+
