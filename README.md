@@ -1,7 +1,7 @@
 # RealityLens
 
-**Cognitive Security & Logic Analysis Engine**
-Live Deployment: [realitylens.onrender.com](https://realitylens.onrender.com)
+**Cognitive Analysis Engine**
+
 
 Live Deployment: [realitylens](https://reality-lens.onrender.com)
 
