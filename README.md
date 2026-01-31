@@ -2,7 +2,7 @@
 
 **Cognitive Analysis Engine**
 
-Live Deployment: [realitylens](https://realitylens.onrender.com)
+Live Deployment: [realitylens](https://reality-lens.onrender.com)
 
 RealityLens is a cognitive analysis engine designed to help users understand how a claim or question is structured, framed, and emotionally presented. Instead of returning direct answers, the system analyzes input text across logical structure, narrative context, and rhetorical tone using structured Gemini 3 reasoning.
 
