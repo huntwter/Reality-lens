@@ -63,10 +63,26 @@
 
 <body class="h-screen w-screen selection:bg-[#D4AF37] selection:text-black">
 
+    <!-- Status Indicator -->
+    <div class="fixed top-6 right-6 z-50 pointer-events-none">
+        <div class="glass-input px-4 py-2 rounded-full flex items-center gap-3 border border-white/10 bg-black/50 backdrop-blur-md">
+            {% if is_online %}
+            <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-[10px] text-emerald-500 font-mono uppercase tracking-[0.2em]">System Online</span>
+            {% else %}
+            <span class="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_#F59E0B]"></span>
+            <span class="text-[10px] text-amber-500 font-mono uppercase tracking-[0.2em]">Offline Core</span>
+            {% endif %}
+        </div>
+    </div>
+
     <div id="main-layout" class="min-h-screen w-full flex flex-col p-8 md:p-12 max-w-[1600px] mx-auto">
 
         <!-- Header / Input -->
-        <header class="mb-16 border-b border-[#333] pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
+        <header class="mb-16 border-b border-[#333] pb-8 flex flex-col md:flex-row justify-between items-end gap-6 relative">
             <div class="flex-shrink-0">
                 <h1 class="text-4xl font-serif text-[#EAEAEA] tracking-tight">REALITY<span
                         class="text-[#C5A059] italic">LENS</span></h1>
@@ -75,10 +91,10 @@
 
             <form id="analysis-form" class="w-full max-w-2xl relative">
                 <input type="text" id="query-input" placeholder="Enter claim for analysis..."
-                    class="w-full bg-transparent border-b border-[#333] text-xl py-2 px-0 text-[#EAEAEA] placeholder-[#444] font-serif focus:outline-none focus:border-[#C5A059] transition-colors duration-300 rounded-none"
+                    class="glass-input w-full text-xl py-3 px-6 text-[#EAEAEA] placeholder-[#444] font-serif focus:outline-none rounded-lg"
                     autocomplete="off">
                 <button type="submit"
-                    class="absolute right-0 top-2 uppercase text-[10px] tracking-widest text-[#C5A059] hover:text-white transition-colors">
+                    class="absolute right-4 top-3.5 uppercase text-[10px] tracking-widest text-[#C5A059] hover:text-white transition-colors">
                     Analyze
                 </button>
             </form>

@@ -1,7 +1,7 @@
 # RealityLens
 
 **Cognitive Security & Logic Analysis Engine**
-Live Deployment: [realitylens.domain.com](https://realitylens.domain.com)
+Live Deployment: [realitylens.onrender.com](https://realitylens.onrender.com)
 
 RealityLens is an enterprise-grade cognitive firewall designed to detect, analyze, and deconstruct rhetorical manipulation in real-time. Unlike standard fact-checkers, it employs a multi-agentic architecture to strictly separate logical validity, historical verification, and rhetorical intent.
 

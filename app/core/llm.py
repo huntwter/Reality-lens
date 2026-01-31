@@ -95,6 +95,69 @@ class LLMProvider:
             
         return full_html
 
+
+    def _save_to_cache(self, prompt: str, response_text: str):
+        """
+        Saves the successful API response to the local cache for future offline use.
+        Merges partial responses (Logic/Origin/Context) into the single HTML entry.
+        """
+        try:
+            # 1. Extract query
+            match = re.search(r':\s*"(.*?)"', prompt, re.DOTALL)
+            user_query = match.group(1) if match else prompt
+            user_query_lower = user_query.lower()
+
+            cache_path = os.path.join("app", "core", "cached_responses.json")
+            data = []
+            if os.path.exists(cache_path):
+                with open(cache_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+
+            # 2. Find existing entry or create new
+            target_entry = None
+            for entry in data:
+                if entry["query"].lower() == user_query_lower:
+                    target_entry = entry
+                    break
+            
+            if not target_entry:
+                # Initialize with empty placeholders if new
+                target_entry = {
+                    "query": user_query,
+                    "response": '<div id="logic-card"></div><div id="origin-card"></div><div id="context-card"></div>'
+                }
+                data.append(target_entry)
+
+            # 3. Update the specific section based on prompt type
+            # We use regex to replace the content inside the specific div
+            current_html = target_entry["response"]
+            
+            if "Analyze logic for" in prompt:
+                # Replace content of logic-card
+                # Use a reliable regex that handles newlines
+                snippet = f'<div id="logic-card">{response_text}</div>'
+                current_html = re.sub(r'<div id="logic-card">.*?</div>', snippet, current_html, flags=re.DOTALL)
+                
+            elif "Trace origin for" in prompt:
+                snippet = f'<div id="origin-card">{response_text}</div>'
+                current_html = re.sub(r'<div id="origin-card">.*?</div>', snippet, current_html, flags=re.DOTALL)
+                
+            elif "Analyze tone for" in prompt:
+                snippet = f'<div id="context-card">{response_text}</div>'
+                current_html = re.sub(r'<div id="context-card">.*?</div>', snippet, current_html, flags=re.DOTALL)
+
+            target_entry["response"] = current_html
+
+            # 4. Write back to disk
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+                
+            # Update memory cache too
+            self._cache = data
+
+        except Exception as e:
+            logger.error(f"Failed to save to cache: {e}")
+
     async def run_prompt(self, prompt: str, system_instruction: str = "") -> str:
         """
         Executes a prompt against Gemini 3 via SDK.
@@ -102,6 +165,7 @@ class LLMProvider:
         """
         # If no client, go straight to fallback
         if not self.client:
+             logger.warning("Client not initialized. Using fallback.")
              return self._get_fallback_response(prompt)
         
         tools = [types.Tool(google_search=types.GoogleSearch())]
@@ -126,10 +190,26 @@ class LLMProvider:
             if not response.text:
                  return "<div><p>Analysis details unavailable.</p></div>"
 
-            return response.text.strip()
+            result_text = response.text.strip()
+            
+            # Save to cache for future offline use
+            self._save_to_cache(prompt, result_text)
+            
+            return result_text
 
         except Exception as e:
-            logger.error(f"Gemini SDK Error: {e}")
+            error_str = str(e)
+            logger.error(f"Gemini SDK Error: {error_str}")
+            
+            # Circuit Breaker: Stop spamming if key is invalid or quota exceeded
+            if "403" in error_str or "PERMISSION_DENIED" in error_str:
+                logger.critical("API Key reported as LEAKED/INVALID. Disabling Online Mode permanently for this session.")
+                self.client = None
+            elif "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
+                logger.warning("Quota exceeded. temporary fallback.")
+                # We don't disable permanently for 429, but maybe we should for a short time? 
+                # For now, just fallback.
+
             logger.info("Attempting offline fallback...")
             # Fallback to cache
             return self._get_fallback_response(prompt)

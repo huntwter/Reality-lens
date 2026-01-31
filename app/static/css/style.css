@@ -9,13 +9,26 @@
 }
 
 body {
-    background-color: var(--color-void);
+    background: radial-gradient(circle at 50% 0%, #1a1a1a 0%, var(--color-void) 100%);
     color: var(--color-text);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     overflow-y: auto;
     /* Allow scrolling for content */
     letter-spacing: -0.01em;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom-color: var(--color-gold);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 h1,

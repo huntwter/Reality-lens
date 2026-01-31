@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
 from app.services.orchestrator import Orchestrator
+import os
 
 # Setup templates via dependency or global
 templates = Jinja2Templates(directory="app/templates")
@@ -13,7 +14,11 @@ orchestrator = Orchestrator()
 
 @router.get("/")
 async def homepage(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    is_online = bool(os.getenv("GEMINI_API_KEY"))
+    return templates.TemplateResponse("index.html", {
+        "request": request, 
+        "is_online": is_online
+    })
 
 @router.get("/stream")
 async def stream_analysis(request: Request, q: str):
